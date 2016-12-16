@@ -10,7 +10,7 @@ public class _CPlayer : MonoBehaviour {
 	void Awake () {
         player_rig = gameObject.GetComponent<Rigidbody2D>();
         player_animator = transform.GetChild(0).GetComponent<Animator>();
-        f_speed = 5.0f;
+        f_speed = 3.0f;
 	}
 	
 	// Update is called once per frame
