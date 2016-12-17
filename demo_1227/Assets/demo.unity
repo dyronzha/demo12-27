@@ -610,6 +610,14 @@ Prefab:
       propertyPath: m_TagString
       value: floor
       objectReference: {fileID: 0}
+    - target: {fileID: 121410, guid: 47b4ddea2df33744aafd6ccb64058c4b, type: 2}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 121410, guid: 47b4ddea2df33744aafd6ccb64058c4b, type: 2}
+      propertyPath: m_TagString
+      value: floor
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 47b4ddea2df33744aafd6ccb64058c4b, type: 2}
   m_IsPrefabParent: 0
@@ -1035,9 +1043,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2147388614}
   - component: {fileID: 2147388613}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: shapes_7
-  m_TagString: floor
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
