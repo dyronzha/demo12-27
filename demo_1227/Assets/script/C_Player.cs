@@ -13,9 +13,9 @@ public class C_Player : MonoBehaviour {
 
 
     //技能相關變數宣告
-    //public GameObject O_mirror = null;
-   // public GameObject O_virtualplayer = null;
-    //public bool b_magic = false;
+    public GameObject O_mirror = null;
+   public GameObject O_virtualplayer = null;
+    public bool b_magic = false;
     public bool b_upside = false;
     private bool b_use_skill = false;
     public float f_shoot = 0f;
@@ -107,7 +107,7 @@ public class C_Player : MonoBehaviour {
     }
     void Update()
     {
-        //Teleport(); //上下瞬移
+        Teleport(); //上下瞬移
         b_isground = Physics2D.Linecast(transform.position, t_ground_check.position, 1 << LayerMask.NameToLayer("ground"));
         //判斷在地上
         if (!b_die)  //沒死
@@ -125,75 +125,69 @@ public class C_Player : MonoBehaviour {
     }
 
 
-    //void Teleport()
-    //{
-    //    //顛倒判定射線
-    //    RaycastHit2D hit_cilling_ray = Physics2D.Raycast(transform.position, Vector2.up, 8.5f, mask_layer);
-    //    RaycastHit2D hit_ground_ray = Physics2D.Raycast(transform.position, Vector2.up, -8.5f, mask_layer);
-    //    Debug.DrawLine(transform.position, transform.position + (Vector3)Vector2.up * 8.5f);
-    //    Debug.DrawLine(transform.position, transform.position + (Vector3)Vector2.up * -8.5f, Color.red);
-    //    //碰到天花板並正向
-    //    if (hit_cilling_ray && !b_upside)
-    //    {
-    //        //紀錄鏡子和虛像與玩家的距離
-    //        between_cilling_vec3 = new Vector3(transform.position.x, (transform.position.y + hit_cilling_ray.transform.position.y) / 2 - 1f, transform.position.z);
-    //        between_virtuall_vec3 = new Vector3(transform.position.x, hit_cilling_ray.point.y - 2.5f, transform.position.z);
+    void Teleport()
+    {
+        //顛倒判定射線
+        RaycastHit2D hit_cilling_ray = Physics2D.Raycast(transform.position, Vector2.up, 8.5f, mask_layer);
+        RaycastHit2D hit_ground_ray = Physics2D.Raycast(transform.position, Vector2.up, -8.5f, mask_layer);
+        Debug.DrawLine(transform.position, transform.position + (Vector3)Vector2.up * 8.5f);
+        Debug.DrawLine(transform.position, transform.position + (Vector3)Vector2.up * -8.5f, Color.red);
+        //碰到天花板並正向
+        if (hit_cilling_ray && !b_upside)
+        {
+            //紀錄鏡子和虛像與玩家的距離
+            between_cilling_vec3 = new Vector3(transform.position.x, (transform.position.y + hit_cilling_ray.point.y) / 2+0.5f , transform.position.z);
+            between_virtuall_vec3 = new Vector3(transform.position.x, hit_cilling_ray.point.y - 0.5f, transform.position.z);
 
-    //        //按鍵後產生鏡子和虛像，並紀錄用過技能
-    //        if (Input.GetKeyDown(KeyCode.K) && !b_magic && b_isground)
-    //        {
-    //            O_tempmirror = Instantiate(O_mirror, between_cilling_vec3, Quaternion.identity) as GameObject;
-    //            O_tempvirtuall = Instantiate(O_virtualplayer, between_virtuall_vec3, Quaternion.Euler(180, 0, 0)) as GameObject;
-    //            b_magic = true;
-    //        }
+            //按鍵後產生鏡子和虛像，並紀錄用過技能
+            if (Input.GetKeyDown(KeyCode.K) && !b_magic && b_isground)
+            {
+                O_tempmirror = Instantiate(O_mirror, between_cilling_vec3, Quaternion.identity) as GameObject;
+                O_tempvirtuall = Instantiate(O_virtualplayer, between_virtuall_vec3, Quaternion.Euler(180, 0, 0)) as GameObject;
+                b_magic = true;
+            }
 
-    //        //放開鍵瞬間移動，改變重力方向，紀錄為顛倒，技能初始
-    //        else if (Input.GetKeyUp(KeyCode.K) && b_magic && b_isground)
-    //        {
-    //            transform.localScale = new Vector3(1f, -1f, 1f);
-    //            transform.position = between_virtuall_vec3;
-    //            player_rig.gravityScale = -3.0f;
-    //            b_magic = false;
-    //            b_upside = true;
-    //        }
-    //    }
+            //放開鍵瞬間移動，改變重力方向，紀錄為顛倒，技能初始
+            else if (Input.GetKeyUp(KeyCode.K) && b_magic && b_isground)
+            {
+                transform.localScale = new Vector3(0.7f, -0.7f, 1f);
+                transform.position = between_virtuall_vec3;
+                player_rig.gravityScale = -3.0f;
+                b_magic = false;
+                b_upside = true;
+            }
+        }
 
-    //    //顛倒後
-    //    else if (hit_ground_ray && b_upside)
-    //    {
-    //        between_cilling_vec3 = new Vector3(transform.position.x, (transform.position.y + hit_ground_ray.transform.position.y) / 2 + 1f, transform.position.z);
-    //        between_virtuall_vec3 = new Vector3(transform.position.x, hit_ground_ray.point.y + 2.2f, transform.position.z);
+        //顛倒後
+        else if (hit_ground_ray && b_upside)
+        {
+            between_cilling_vec3 = new Vector3(transform.position.x, (transform.position.y + hit_ground_ray.point.y) / 2-0.5f , transform.position.z);
+            between_virtuall_vec3 = new Vector3(transform.position.x, hit_ground_ray.point.y + 0.5f, transform.position.z);
 
-    //        if (Input.GetKeyDown(KeyCode.K) && !b_magic && b_isground)
-    //        {
-    //            GameObject ground;
-    //            Renderer groundrender;
-    //            ground = GameObject.Find("ground");
-    //            groundrender = ground.GetComponent<Renderer>();
-    //            Vector3 groundsize;
-    //            groundsize = groundrender.bounds.size;
-    //            O_tempmirror = Instantiate(O_mirror, between_cilling_vec3, Quaternion.identity) as GameObject;
-    //            O_tempvirtuall = Instantiate(O_virtualplayer, between_virtuall_vec3, Quaternion.identity) as GameObject;
-    //            b_magic = true;
-    //        }
+            if (Input.GetKeyDown(KeyCode.K) && !b_magic && b_isground)
+            {
+                O_tempmirror = Instantiate(O_mirror, between_cilling_vec3, Quaternion.identity) as GameObject;
+                O_tempvirtuall = Instantiate(O_virtualplayer, between_virtuall_vec3, Quaternion.identity) as GameObject;
+                b_magic = true;
+            }
 
-    //        //瞬間移動
-    //        else if (Input.GetKeyUp(KeyCode.K) && b_magic && b_isground)
-    //        {
-    //            transform.localScale = new Vector3(1f, 1f, 1f);
-    //            transform.position = between_virtuall_vec3;
-    //            player_rig.gravityScale = 3.0f;
-    //            b_magic = false;
-    //            b_upside = false;
-    //        }
-    //    }
-    //    else if ((!hit_cilling_ray || !hit_ground_ray) && b_magic)
-    //    {
-    //        Destroy(O_tempmirror, 0f);
-    //        Destroy(O_tempvirtuall, 0f);
-    //        b_magic = false;
-    //    }
-    //}
+            //瞬間移動
+            else if (Input.GetKeyUp(KeyCode.K) && b_magic && b_isground)
+            {
+                transform.localScale = new Vector3(0.7f, 0.7f, 1f);
+                transform.position = between_virtuall_vec3;
+                player_rig.gravityScale = 3.0f;
+                b_magic = false;
+                b_upside = false;
+            }
+        }
+        else if ((!hit_cilling_ray || !hit_ground_ray) && b_magic)
+        {
+            Destroy(O_tempmirror, 0f);
+            Destroy(O_tempvirtuall, 0f);
+            b_magic = false;
+        }
+    }
 
     //跳
     void JumpAct()

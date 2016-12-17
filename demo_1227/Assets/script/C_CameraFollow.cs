@@ -8,7 +8,7 @@ public class C_CameraFollow : MonoBehaviour {
     private bool TouchTop, TouchDown, y_axis_change;
 
     //攝影機移動範圍
-    private Vector3 range;
+    private Vector3 range_x,range_y;
 
     //角色變數
     private Transform target;
@@ -22,7 +22,8 @@ public class C_CameraFollow : MonoBehaviour {
         target = GameObject.Find("Player").transform;
         right_border = this.gameObject.transform.GetChild(0);
         left_border = this.gameObject.transform.GetChild(1);
-        range = new Vector3(-500.0f, 500.0f, 0.0f);
+        range_x = new Vector3(16.88f, 34.2f, 0.0f);
+        range_y = new Vector3(15.05f, 22.2f, 0.0f);
         playerclass = target.GetComponent<C_Player>();
         sp = target.transform.GetChild(2).GetComponent<SpriteRenderer>();
         playerbottom = sp.bounds.min;
@@ -54,7 +55,7 @@ public class C_CameraFollow : MonoBehaviour {
             FollowPlayer();
 
         //限制視窗可移動範圍
-        transform.position = new Vector3(Mathf.Clamp(transform.position.x, range.x, range.y), transform.position.y, transform.position.z);
+        transform.position = new Vector3(Mathf.Clamp(transform.position.x, range_x.x, range_x.y), Mathf.Clamp(transform.position.y, range_y.x, range_y.y), transform.position.z);
     }
 
     //RESET

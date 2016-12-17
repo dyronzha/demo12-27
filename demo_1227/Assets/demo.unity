@@ -485,6 +485,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   b_is_save: 0
+  O_mirror: {fileID: 1335495975735894, guid: 4d9f8c60ea34b6f4e8baef5294df96a5, type: 2}
+  O_virtualplayer: {fileID: 1948975990773618, guid: 24308c35c7f5e5e4182a895646e90970,
+    type: 2}
+  b_magic: 0
   b_upside: 0
   f_shoot: 0
   O_bullet: {fileID: 1000013838118004, guid: 1b0330be4b0d73744ad0bd328aaa13df, type: 2}
@@ -496,7 +500,7 @@ MonoBehaviour:
   between_virtuall_vec3: {x: 0, y: 0, z: 0}
   mask_layer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   b_die: 0
   O_wall: {fileID: 0}
 --- !u!1001 &1242504503
@@ -842,7 +846,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4000013173865180, guid: 1b0330be4b0d73744ad0bd328aaa13df, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 19.385687
+      value: 16.41
       objectReference: {fileID: 0}
     - target: {fileID: 4000013173865180, guid: 1b0330be4b0d73744ad0bd328aaa13df, type: 2}
       propertyPath: m_LocalPosition.y
