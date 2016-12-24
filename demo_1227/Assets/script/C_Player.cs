@@ -286,7 +286,7 @@ public class C_Player : MonoBehaviour {
             }
             else if (Input.GetKey(KeyCode.D))
             {
-                transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);//轉向用
+                transform.localScale = new Vector3(1f, 1f, 1f);//轉向用
                 player_rig.velocity = new Vector2(f_speed, player_rig.velocity.y);
                 player_animator.SetBool("walk", true);
             }
