@@ -25,10 +25,13 @@ public class C_Player : MonoBehaviour {
     bool skill_ani_use = false;
     RaycastHit2D hit_cilling_ray ;
     RaycastHit2D hit_ground_ray;
+   Transform AOE_col;
+    bool b_AOE_has;
 
     //玩家物件相關變數
     public GameObject O_bullet = null;
     Rigidbody2D player_rig = null;
+    Animator player_spine_animator = null;
     Animator player_animator = null;
     public bool b_isground = true;
     private Transform t_ground_check;
@@ -68,7 +71,8 @@ public class C_Player : MonoBehaviour {
         player_rig = GetComponent<Rigidbody2D>();
         t_ground_check = transform.Find("Groundcheck");
         t_pic = transform.Find("pic");
-        player_animator = transform.GetChild(0).GetComponent<Animator>();
+        player_spine_animator = transform.GetChild(0).GetComponent<Animator>();
+        player_animator = gameObject.GetComponent<Animator>();
         jump_vec2 = new Vector2(0, f_jump_speed);
         player_coll = GetComponent<Collider2D>();
         respawn_position_vec3 = transform.position;
@@ -77,6 +81,9 @@ public class C_Player : MonoBehaviour {
         HP_ui = GameObject.Find("UI_HP").GetComponent<C_UIHP>();
         player_box = gameObject.GetComponent<BoxCollider2D>();
         player_material = player_box.sharedMaterial;
+        AOE_col = transform.GetChild(3);
+        AOE_col.gameObject.SetActive(false);
+        b_AOE_has = false;
     }
 
     void Start()
@@ -111,6 +118,7 @@ public class C_Player : MonoBehaviour {
     }
     void Update()
     {
+        AOE_skill();
         TeleportToAni(); //上下瞬移
         b_isground = Physics2D.Linecast(transform.position, t_ground_check.position, 1 << LayerMask.NameToLayer("ground"));
         //判斷在地上
@@ -146,7 +154,7 @@ public class C_Player : MonoBehaviour {
         }
             if (Input.GetKeyDown(KeyCode.K))
         {
-           if(!skill_ani_use) player_animator.Play("mirror");
+           if(!skill_ani_use) player_spine_animator.Play("mirror");
             skill_ani_use = true;
         }
             if (skill_time < 0.5f )
@@ -281,14 +289,14 @@ public class C_Player : MonoBehaviour {
                 transform.localScale = new Vector3(-0.7f, 0.7f, 0.7f);//轉向用
 
                 player_rig.velocity = new Vector2(-f_speed, player_rig.velocity.y); //速度等於speed
-                player_animator.SetBool("walk", true);  //動畫開關
+                player_spine_animator.SetBool("walk", true);  //動畫開關
 
             }
             else if (Input.GetKey(KeyCode.D))
             {
-                transform.localScale = new Vector3(1f, 1f, 1f);//轉向用
+                transform.localScale = new Vector3(0.7f, 0.7f, 1f);//轉向用
                 player_rig.velocity = new Vector2(f_speed, player_rig.velocity.y);
-                player_animator.SetBool("walk", true);
+                player_spine_animator.SetBool("walk", true);
             }
         }
 
@@ -298,20 +306,20 @@ public class C_Player : MonoBehaviour {
             {
                 transform.localScale = new Vector3(-0.7f, -0.7f, 0.7f);//轉向用
                 player_rig.velocity = new Vector2(-f_speed, player_rig.velocity.y);
-                player_animator.SetBool("walk", true);
+                player_spine_animator.SetBool("walk", true);
 
             }
             else if (Input.GetKey(KeyCode.D))
             {
                 transform.localScale = new Vector3(0.7f, -0.7f, 0.7f);//轉向用
                 player_rig.velocity = new Vector2(f_speed, player_rig.velocity.y);
-                player_animator.SetBool("walk", true);
+                player_spine_animator.SetBool("walk", true);
             }
         }
 
         if (!(Input.GetKey(KeyCode.D)) && (!Input.GetKey(KeyCode.A)))
         {
-            player_animator.SetBool("walk", false);
+            player_spine_animator.SetBool("walk", false);
         }
     }
 
@@ -382,6 +390,19 @@ public class C_Player : MonoBehaviour {
         }
     }
 
+    void AOE_skill() {
+        if (Input.GetKeyDown(KeyCode.E)){
+            player_animator.Play("AOE_skill");
+            b_AOE_has = true;
+            AOE_col.gameObject.SetActive(true);
+            
+        }
+    }
+    public void AOE_end() {
+        b_AOE_has = false;
+        AOE_col.gameObject.SetActive(false);
+    }
+
     //受傷
     void GetHurt()
     {
@@ -432,6 +453,10 @@ public class C_Player : MonoBehaviour {
             b_is_save = true;
             Debug.Log(b_is_save);
             Destroy(collider.gameObject);
+        }
+        else if (collider.tag =="enemy" && b_AOE_has) {
+            collider.gameObject.SendMessage("GetHurt");
+            Debug.Log("enemy_hurt");
         }
 
     }
