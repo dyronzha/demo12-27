@@ -14,11 +14,11 @@ public class C_CameraFollow : MonoBehaviour {
     private Transform target;
     SpriteRenderer sp;
     private C_Player playerclass;
-    private Vector3 playertop, playerbottom, FixedPosition;
-
+    private Vector3 playertop, playerbottom, FixedPosition, tele_move_vec3;
     // Use this for initialization
     void Awake()
     {
+        
         target = GameObject.Find("Player").transform;
         right_border = this.gameObject.transform.GetChild(0);
         left_border = this.gameObject.transform.GetChild(1);
@@ -110,5 +110,15 @@ public class C_CameraFollow : MonoBehaviour {
         {
             transform.position = new Vector3(playerbottom.x + btwback, transform.position.y, transform.position.z);
         }
+    }
+    public void TeleMove() {
+        tele_move_vec3 = new Vector3(target.transform.position.x+ (Mathf.Sign(target.transform.localScale.x) * 2.5f), transform.position.y, transform.position.z);
+        Vector3 btw_tele = (tele_move_vec3 - transform.position).normalized*0.5f;
+        if (Vector3.Distance(transform.position, tele_move_vec3) > 1.0f) {
+            transform.position += btw_tele;
+        }
+    }
+    public void ResetPos() {
+        transform.position = target.transform.position;
     }
 }

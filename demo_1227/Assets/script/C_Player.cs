@@ -14,10 +14,10 @@ public class C_Player : MonoBehaviour {
 
     //技能相關變數宣告
     public GameObject O_mirror = null;
-   public GameObject O_virtualplayer = null;
+    public GameObject O_virtualplayer = null;
     public bool b_magic = false;
     public bool b_upside = false;
-    private bool b_use_skill = false;
+    public bool b_use_skill = false;
     public float f_shoot = 0f;
     GameObject O_tempmirror;
     GameObject O_tempvirtuall;
@@ -25,10 +25,12 @@ public class C_Player : MonoBehaviour {
     bool skill_ani_use = false;
     RaycastHit2D hit_cilling_ray ;
     RaycastHit2D hit_ground_ray;
-   Transform AOE_col;
+    Transform AOE_col;
     bool b_AOE_has;
 
+
     //玩家物件相關變數
+    GameObject camera;
     public GameObject O_bullet = null;
     Rigidbody2D player_rig = null;
     Animator player_spine_animator = null;
@@ -41,6 +43,8 @@ public class C_Player : MonoBehaviour {
     public int i_hp;
     protected C_UIHP HP_ui;
     public string s_name = "player";
+    public Transform player_tra;
+    
 
     //玩家運動變數
     private float f_speed = 0.0f;
@@ -52,19 +56,22 @@ public class C_Player : MonoBehaviour {
     public Vector3 between_virtuall_vec3;
     bool b_airmove = false;
     public LayerMask mask_layer;
+    public bool direction = true; //面相右邊為true 左邊false
 
     //重生變數
     public bool b_die = false;
     private Vector3 respawn_position_vec3;
     private float f_dietime = 0;
+    
 
 
-
-    public GameObject O_wall;
+    
 
     // Use this for initialization
     void Awake()
     {
+        respawn_position_vec3 = transform.position;
+        camera = GameObject.Find("Main Camera");
         b_die = false;
         f_jump_speed = 7.0f;
         f_speed = 8.0f;
@@ -73,6 +80,7 @@ public class C_Player : MonoBehaviour {
         t_pic = transform.Find("pic");
         player_spine_animator = transform.GetChild(0).GetComponent<Animator>();
         player_animator = gameObject.GetComponent<Animator>();
+        player_tra = gameObject.GetComponent<Transform>();
         jump_vec2 = new Vector2(0, f_jump_speed);
         player_coll = GetComponent<Collider2D>();
         respawn_position_vec3 = transform.position;
@@ -84,6 +92,7 @@ public class C_Player : MonoBehaviour {
         AOE_col = transform.GetChild(3);
         AOE_col.gameObject.SetActive(false);
         b_AOE_has = false;
+        
     }
 
     void Start()
@@ -130,10 +139,16 @@ public class C_Player : MonoBehaviour {
                 JumpAct();
             }
             //射擊
-           ShootAct();
+            ShootAct();
             //射擊間格時間
             if (f_shoot < 3) f_shoot += Time.deltaTime;
         }
+        else PlayerRespawn();
+        if (player_tra.localScale.x > 0)
+        {
+            direction = true;
+        }
+        else direction = false;
     }
 
     void TeleportToAni() {
@@ -171,6 +186,8 @@ public class C_Player : MonoBehaviour {
       
         if (Input.GetKeyUp(KeyCode.K))
         {
+            skill_ani_use = false;
+            skill_time = 0.0f;
             if (b_magic && b_isground && !b_upside)
             {
                 transform.localScale = new Vector3(0.7f, -0.7f, 1f);
@@ -351,31 +368,9 @@ public class C_Player : MonoBehaviour {
     }
 
 
-    //void Through()
-    //{
-    //    if (Input.GetKey(KeyCode.H))
-    //    {
-    //        Physics2D.IgnoreCollision(player_coll, O_wall.GetComponent<Collider2D>(), true);
-    //    }
-    //    else
-    //    {
-    //        Physics2D.IgnoreCollision(player_coll, O_wall.GetComponent<Collider2D>(), false);
-    //    }
-    //}
+    
 
-    //void TeleportLeft()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.J))
-    //    {
-    //        b_use_skill = true;
-    //        Instantiate(O_virtualplayer, transform.position + new Vector3(5f, -0.5f, 0), Quaternion.identity);
-    //    }
-    //    else if (Input.GetKeyUp(KeyCode.J))
-    //    {
-    //        transform.position = transform.position + new Vector3(5f, -0.5f, 0);
-    //        b_use_skill = false;
-    //    }
-    //}
+
 
     //腳色重生
     void PlayerRespawn()
@@ -385,8 +380,10 @@ public class C_Player : MonoBehaviour {
         if (f_dietime > 1.3f)
         {
             this.player_rig.velocity = new Vector2(0, 0);
+            transform.position = respawn_position_vec3;
             b_die = false;
             f_dietime = 0;
+            camera.SendMessage("ResetPos");
         }
     }
 
