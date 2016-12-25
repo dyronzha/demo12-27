@@ -381,6 +381,11 @@ public class C_Player : MonoBehaviour {
         {
             this.player_rig.velocity = new Vector2(0, 0);
             transform.position = respawn_position_vec3;
+            b_magic = false;
+            b_upside = false;
+            b_use_skill = false;
+            player_rig.gravityScale = 1.5f;
+            transform.localScale = new Vector3(0.7f,0.7f,1);
             b_die = false;
             f_dietime = 0;
             camera.SendMessage("ResetPos");
@@ -410,7 +415,7 @@ public class C_Player : MonoBehaviour {
     //判斷掉落死亡
     void IsDie()
     {
-        if (transform.position.y < O_dieline.transform.position.y)
+        if (transform.position.y < O_dieline.transform.position.y || transform.position.y>30.0f)
         {
             b_die = true;
         }

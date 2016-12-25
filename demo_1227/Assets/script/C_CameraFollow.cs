@@ -119,6 +119,6 @@ public class C_CameraFollow : MonoBehaviour {
         }
     }
     public void ResetPos() {
-        transform.position = target.transform.position;
+        transform.position = new Vector3(target.transform.position.x, target.transform.position.y,transform.position.z) ;
     }
 }
