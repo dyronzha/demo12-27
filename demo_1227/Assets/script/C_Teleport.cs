@@ -18,13 +18,13 @@ public class C_Teleport : MonoBehaviour {
     {
         if (player.direction)
         {
-            if (Input.GetKeyDown(KeyCode.J))
+            if (Input.GetKeyDown(KeyCode.Q))
             {
                 tele_skill = true;
                 player.b_use_skill = true;
                 //Instantiate(O_virtualplayer, transform.position + new Vector3(5f, -0.5f, 0), Quaternion.identity);
             }
-            else if (Input.GetKeyUp(KeyCode.J))
+            else if (Input.GetKeyUp(KeyCode.Q))
             {
                 tele_skill = false;
                 transform.position = transform.position + new Vector3(5f, -0.5f, 0);
@@ -33,13 +33,13 @@ public class C_Teleport : MonoBehaviour {
         }
         else
         {
-            if (Input.GetKeyDown(KeyCode.J))
+            if (Input.GetKeyDown(KeyCode.Q))
             {
                 tele_skill = true;
                 player.b_use_skill = true;
                 //Instantiate(O_virtualplayer, transform.position + new Vector3(-5f, -0.5f, 0), Quaternion.identity);
             }
-            else if (Input.GetKeyUp(KeyCode.J))
+            else if (Input.GetKeyUp(KeyCode.Q))
             {
                 tele_skill = false;
                 transform.position = transform.position + new Vector3(-5f, -0.5f, 0);

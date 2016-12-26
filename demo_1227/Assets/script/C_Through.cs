@@ -15,7 +15,7 @@ public class C_Through : MonoBehaviour {
     }
     void Through() //穿透
     {
-        if (Input.GetKey(KeyCode.H))
+        if (Input.GetKey(KeyCode.F))
         {
             Debug.Log("H key down");
             Physics2D.IgnoreCollision(player_coll, O_wall.GetComponent<BoxCollider2D>(), true);

@@ -73,7 +73,7 @@ public class C_Player : MonoBehaviour {
         respawn_position_vec3 = transform.position;
         camera = GameObject.Find("Main Camera");
         b_die = false;
-        f_jump_speed = 7.0f;
+        f_jump_speed = 8.5f;
         f_speed = 8.0f;
         player_rig = GetComponent<Rigidbody2D>();
         t_ground_check = transform.Find("Groundcheck");
@@ -159,15 +159,15 @@ public class C_Player : MonoBehaviour {
         if (hit_cilling_ray && !b_upside)
         {
             //紀錄鏡子和虛像與玩家的距離
-            between_cilling_vec3 = new Vector3(transform.position.x, (transform.position.y + hit_cilling_ray.point.y) / 2 + 0.5f, transform.position.z);
+            between_cilling_vec3 = new Vector3(transform.position.x, (transform.position.y + hit_cilling_ray.point.y) / 2 + 0.3f, transform.position.z);
             between_virtuall_vec3 = new Vector3(transform.position.x, hit_cilling_ray.point.y - 0.5f, transform.position.z);
         }
        else  if (hit_ground_ray && b_upside)
         {
-            between_cilling_vec3 = new Vector3(transform.position.x, (transform.position.y + hit_ground_ray.point.y) / 2 - 0.5f, transform.position.z);
+            between_cilling_vec3 = new Vector3(transform.position.x, (transform.position.y + hit_ground_ray.point.y) / 2 - 0.3f, transform.position.z);
             between_virtuall_vec3 = new Vector3(transform.position.x, hit_ground_ray.point.y + 0.5f, transform.position.z);
         }
-            if (Input.GetKeyDown(KeyCode.K))
+            if (Input.GetKeyDown(KeyCode.E))
         {
            if(!skill_ani_use) player_spine_animator.Play("mirror");
             skill_ani_use = true;
@@ -184,7 +184,7 @@ public class C_Player : MonoBehaviour {
                     Teleport();
             }
       
-        if (Input.GetKeyUp(KeyCode.K))
+        if (Input.GetKeyUp(KeyCode.E))
         {
             skill_ani_use = false;
             skill_time = 0.0f;
@@ -229,7 +229,7 @@ public class C_Player : MonoBehaviour {
           //  between_virtuall_vec3 = new Vector3(transform.position.x, hit_cilling_ray.point.y - 0.5f, transform.position.z);
 
            // //按鍵後產生鏡子和虛像，並紀錄用過技能
-           if ( !b_magic && b_isground)
+           if ( !b_magic && b_isground&& !b_upside)
           {
                 O_tempmirror = Instantiate(O_mirror, between_cilling_vec3, Quaternion.identity) as GameObject;
                 O_tempvirtuall = Instantiate(O_virtualplayer, between_virtuall_vec3, Quaternion.Euler(180, 0, 0)) as GameObject;
@@ -253,7 +253,7 @@ public class C_Player : MonoBehaviour {
         //    between_cilling_vec3 = new Vector3(transform.position.x, (transform.position.y + hit_ground_ray.point.y) / 2-0.5f , transform.position.z);
       //      between_virtuall_vec3 = new Vector3(transform.position.x, hit_ground_ray.point.y + 0.5f, transform.position.z);
 
-            if ( !b_magic && b_isground)
+            if ( !b_magic && b_isground&& b_upside)
             {
                 O_tempmirror = Instantiate(O_mirror, between_cilling_vec3, Quaternion.identity) as GameObject;
                 O_tempvirtuall = Instantiate(O_virtualplayer, between_virtuall_vec3, Quaternion.identity) as GameObject;
@@ -393,7 +393,7 @@ public class C_Player : MonoBehaviour {
     }
 
     void AOE_skill() {
-        if (Input.GetKeyDown(KeyCode.E)){
+        if (Input.GetMouseButtonDown(2)){
             player_animator.Play("AOE_skill");
             b_AOE_has = true;
             AOE_col.gameObject.SetActive(true);

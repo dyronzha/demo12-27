@@ -13,4 +13,11 @@ public class C_Debris : MonoBehaviour {
         if (f_time < 5.0f) f_time += Time.deltaTime;
         else Destroy(this.gameObject);
 	}
+
+    void OnTriggerEnter2D(Collider2D collider) {
+        if (collider.tag == "enemy") {
+            Destroy(collider.gameObject);
+            Destroy(this.gameObject);
+        } 
+    }
 }

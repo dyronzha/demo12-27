@@ -17,7 +17,7 @@ public class C_VirtualPlayer : MonoBehaviour {
 
     void FixedUpdate()
     {
-        if (Input.GetKey(KeyCode.K)) transform.position = player.between_virtuall_vec3;
+        if (Input.GetKey(KeyCode.E)) transform.position = player.between_virtuall_vec3;
     }
 
 
@@ -25,7 +25,7 @@ public class C_VirtualPlayer : MonoBehaviour {
     void Update()
     {
 
-        if (Input.GetKeyUp(KeyCode.K))//虛像消失
+        if (Input.GetKeyUp(KeyCode.E))//虛像消失
         {
             Destroy(gameObject, 0f);
         }
