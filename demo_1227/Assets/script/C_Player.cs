@@ -461,6 +461,10 @@ public class C_Player : MonoBehaviour {
             collider.gameObject.SendMessage("GetHurt");
             Debug.Log("enemy_hurt");
         }
+        else if (collider.tag == "debris" && b_AOE_has)
+        {
+            Destroy(collider.gameObject);
+        }
 
     }
 }
