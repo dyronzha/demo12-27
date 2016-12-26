@@ -6,6 +6,8 @@ TagManager:
   tags:
   - floor
   - flloor
+  - enemy
+  - debris
   layers:
   - Default
   - TransparentFX
@@ -48,4 +50,7 @@ TagManager:
     locked: 0
   - name: player
     uniqueID: 2239324233
+    locked: 0
+  - name: effect
+    uniqueID: 3196240229
     locked: 0
