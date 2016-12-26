@@ -30,7 +30,7 @@ public class C_Mirror : MonoBehaviour {
     void Update()
     {
 
-        if (Input.GetKeyUp(KeyCode.Q))//鏡子消失
+        if (Input.GetKeyUp(KeyCode.E))//鏡子消失
         {
             Destroy(gameObject, 0f);
         }

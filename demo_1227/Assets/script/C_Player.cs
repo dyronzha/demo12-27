@@ -346,18 +346,19 @@ public class C_Player : MonoBehaviour {
         GameObject vbullet;
         Rigidbody2D vrigidbody;
         Vector3 v3,v3_position;
-        Vector2 v2, input;
+        Vector2 v2, input, v2_position;
         float angle;
         v3 = Camera.main.WorldToScreenPoint(transform.position);  //自己位置轉成螢幕座標
         v2 = new Vector2(v3.x, v3.y); //再轉乘二維向量
+        v3_position = Camera.main.WorldToScreenPoint(transform.position + new Vector3(transform.lossyScale.x, 0.7f, 0));
+        v2_position = new Vector2(v3_position.x, v3_position.y);
         input = new Vector2(Input.mousePosition.x, Input.mousePosition.y); //紀錄滑鼠位置
-        Vector2 normalied = ((input - v2)).normalized;  //滑鼠與自己的向量差正規化
-        angle = Mathf.Atan2(-(input - v2).x, (input - v2).y) * Mathf.Rad2Deg;
+        Vector2 normalied = ((input - v2_position)).normalized;  //滑鼠與自己的向量差正規化
+        angle = Mathf.Atan2(-(input - v2_position).x, (input - v2_position).y) * Mathf.Rad2Deg;
         //算向量差與x軸的夾角的餘角(因為是讓子彈原是90度開始轉)
-        v3_position = transform.position + new Vector3(transform.lossyScale.x,0.7f,0);
         if ((Input.GetMouseButtonDown(1) && f_shoot > 0.5f) || (Input.GetMouseButtonDown(1) && f_shoot == 0))//射子彈
         {
-            vbullet = Instantiate(O_bullet,v3_position, Quaternion.Euler(0f, 0f, 0f)) as GameObject;
+            vbullet = Instantiate(O_bullet, transform.position + new Vector3(transform.lossyScale.x, 0.7f, 0), Quaternion.Euler(0f, 0f, 0f)) as GameObject;
             vrigidbody = vbullet.GetComponent<Rigidbody2D>();
             vrigidbody.velocity = new Vector3(normalied.x * 25, normalied.y * 25, 0.0f);
             vbullet.transform.rotation = Quaternion.Euler(0f, 0f, angle);

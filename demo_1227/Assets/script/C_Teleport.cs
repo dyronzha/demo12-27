@@ -8,11 +8,17 @@ public class C_Teleport : MonoBehaviour {
     C_Player player;
     bool tele_skill = false;
     GameObject camera;
+    Transform spine_ani;
+    Animator animator;
+
+
 
     void Start () {
         player = this.GetComponent<C_Player>();
         Debug.Log(player.direction);
         camera = GameObject.Find("Main Camera");
+        spine_ani = transform.GetChild(0);
+        animator = this.gameObject.GetComponent<Animator>();
     }
     void Teleport()
     {
@@ -26,8 +32,10 @@ public class C_Teleport : MonoBehaviour {
             }
             else if (Input.GetKeyUp(KeyCode.Q))
             {
+                spine_ani.gameObject.SetActive(false);
+                animator.Play("TeleSide");
                 tele_skill = false;
-                transform.position = transform.position + new Vector3(5f, -0.5f, 0);
+                //transform.position = transform.position + new Vector3(5f, -0.5f, 0);
                 player.b_use_skill = false;
             }
         }
@@ -41,8 +49,10 @@ public class C_Teleport : MonoBehaviour {
             }
             else if (Input.GetKeyUp(KeyCode.Q))
             {
+                spine_ani.gameObject.SetActive(false);
+                animator.Play("TeleSide");
                 tele_skill = false;
-                transform.position = transform.position + new Vector3(-5f, -0.5f, 0);
+                //transform.position = transform.position + new Vector3(-5f, -0.5f, 0);
                 player.b_use_skill = false;
             }
         }
@@ -51,4 +61,11 @@ public class C_Teleport : MonoBehaviour {
         Teleport();
         if (tele_skill) camera.SendMessage("TeleMove");
     }
+
+    void DoingTele() {
+        if (player.direction) transform.position = transform.position + new Vector3(8f, 0f, 0);
+        else transform.position = transform.position + new Vector3(-8f, 0f, 0);
+        spine_ani.gameObject.SetActive(true);
+    }
+
 }
