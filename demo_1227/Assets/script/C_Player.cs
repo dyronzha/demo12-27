@@ -27,6 +27,7 @@ public class C_Player : MonoBehaviour {
     RaycastHit2D hit_ground_ray;
     Transform AOE_col;
     bool b_AOE_has;
+    float shoot_ani_time;
 
 
     //玩家物件相關變數
@@ -139,7 +140,7 @@ public class C_Player : MonoBehaviour {
                 JumpAct();
             }
             //射擊
-            ShootAct();
+            ShootAni();
             //射擊間格時間
             if (f_shoot < 3) f_shoot += Time.deltaTime;
         }
@@ -341,11 +342,9 @@ public class C_Player : MonoBehaviour {
     }
 
 
-    void ShootAct()
+    void ShootAni()
     {
-        GameObject vbullet;
-        Rigidbody2D vrigidbody;
-        Vector3 v3,v3_position;
+        Vector3 v3, v3_position;
         Vector2 v2, input, v2_position;
         float angle;
         v3 = Camera.main.WorldToScreenPoint(transform.position);  //自己位置轉成螢幕座標
@@ -355,9 +354,21 @@ public class C_Player : MonoBehaviour {
         input = new Vector2(Input.mousePosition.x, Input.mousePosition.y); //紀錄滑鼠位置
         Vector2 normalied = ((input - v2_position)).normalized;  //滑鼠與自己的向量差正規化
         angle = Mathf.Atan2(-(input - v2_position).x, (input - v2_position).y) * Mathf.Rad2Deg;
-        //算向量差與x軸的夾角的餘角(因為是讓子彈原是90度開始轉)
-        if ((Input.GetMouseButtonDown(1) && f_shoot > 0.5f) || (Input.GetMouseButtonDown(1) && f_shoot == 0))//射子彈
+        if (shoot_ani_time==0 && (Input.GetMouseButtonDown(1) && f_shoot > 0.5f) || (Input.GetMouseButtonDown(1) && f_shoot == 0))//射子彈
         {
+            shoot_ani_time = 0.01f;
+            player_spine_animator.Play("shoot");
+        }
+        if(shoot_ani_time>0)shoot_ani_time += Time.deltaTime;
+        if (shoot_ani_time > 0.7f) ShootAct(normalied,angle);
+    }
+
+    void ShootAct(Vector2 normalied, float angle)
+    {
+        GameObject vbullet;
+        Rigidbody2D vrigidbody;
+      
+        //算向量差與x軸的夾角的餘角(因為是讓子彈原是90度開始轉)
             vbullet = Instantiate(O_bullet, transform.position + new Vector3(transform.lossyScale.x, 0.7f, 0), Quaternion.Euler(0f, 0f, 0f)) as GameObject;
             vrigidbody = vbullet.GetComponent<Rigidbody2D>();
             vrigidbody.velocity = new Vector3(normalied.x * 25, normalied.y * 25, 0.0f);
@@ -365,7 +376,7 @@ public class C_Player : MonoBehaviour {
             i_hp--;
             HP_ui.PresentHp(ref i_hp);
             f_shoot = 0;
-        }
+        shoot_ani_time = 0f;
     }
 
 

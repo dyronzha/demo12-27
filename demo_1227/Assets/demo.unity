@@ -1460,7 +1460,7 @@ MonoBehaviour:
   calculateTangents: 0
   logErrors: 0
   disableRenderingOnOverride: 1
-  layerMixModes: 00000000
+  layerMixModes: 0000000000000000
 --- !u!95 &1553356838
 Animator:
   serializedVersion: 3
