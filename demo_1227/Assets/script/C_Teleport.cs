@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class C_Teleport : MonoBehaviour {
 
-    //public GameObject O_virtualplayer = null; //虛像
+    public GameObject O_virtualplayer = null; //虛像
     C_Player player;
     bool tele_skill = false;
-    GameObject camera;
+    GameObject camera, temp;
     Transform spine_ani;
     Animator animator;
 
 
 
     void Start () {
+        temp = null;
         player = this.GetComponent<C_Player>();
         Debug.Log(player.direction);
         camera = GameObject.Find("Main Camera");
@@ -28,7 +29,7 @@ public class C_Teleport : MonoBehaviour {
             {
                 tele_skill = true;
                 player.b_use_skill = true;
-                //Instantiate(O_virtualplayer, transform.position + new Vector3(5f, -0.5f, 0), Quaternion.identity);
+                if(temp==null) temp = Instantiate(O_virtualplayer, transform.position + new Vector3(8f, 0f, 0), Quaternion.identity);
             }
             else if (Input.GetKeyUp(KeyCode.Q))
             {
@@ -45,14 +46,14 @@ public class C_Teleport : MonoBehaviour {
             {
                 tele_skill = true;
                 player.b_use_skill = true;
-                //Instantiate(O_virtualplayer, transform.position + new Vector3(-5f, -0.5f, 0), Quaternion.identity);
+                if (temp == null) temp = Instantiate(O_virtualplayer, transform.position + new Vector3(-8f, 0f, 0), Quaternion.identity);
             }
             else if (Input.GetKeyUp(KeyCode.Q))
             {
                 spine_ani.gameObject.SetActive(false);
                 animator.Play("TeleSide");
                 tele_skill = false;
-                //transform.position = transform.position + new Vector3(-5f, -0.5f, 0);
+                //transform.position = transform.position + new Vector3(-8f, -0.5f, 0);
                 player.b_use_skill = false;
             }
         }
@@ -60,6 +61,10 @@ public class C_Teleport : MonoBehaviour {
     void Update () {
         Teleport();
         if (tele_skill) camera.SendMessage("TeleMove");
+        if (Input.GetKeyUp(KeyCode.Q)) {
+            Destroy(temp);
+            temp = null;
+        }
     }
 
     void DoingTele() {

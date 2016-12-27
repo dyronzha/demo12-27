@@ -1067,6 +1067,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e4d1558f99f667469cace1cf359fec6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  O_virtualplayer: {fileID: 1571943242984676, guid: 24308c35c7f5e5e4182a895646e90970,
+    type: 2}
 --- !u!1001 &1242504503
 Prefab:
   m_ObjectHideFlags: 0
